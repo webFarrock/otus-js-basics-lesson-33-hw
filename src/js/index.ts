@@ -1,60 +1,65 @@
-import {configureStore} from './configureStore';
-import {combineReducers} from "./combineReducers";
+import { configureStore } from "./configureStore";
+import { combineReducers } from "./combineReducers";
 
 (document.getElementById("app") as HTMLElement).innerHTML = `Redux`;
 
 type State = {
-    counter: number
-    secondCounter: number
+  counter: number;
+  secondCounter: number;
 };
-const state: State = {counter: 100, secondCounter: 500}
+const state: State = { counter: 100, secondCounter: 500 };
 
-type Action = {
-    type: 'inc'
-} | {
-    type: 'inc10'
-} | {
-    type: 'dec'
-} | {
-    type: 'dec10'
-} | {
-    type: 'plus',
-    payload: number
-} | {
-    type: 'plusSecond',
-    payload: number
-}
-
+type Action =
+  | {
+      type: "inc";
+    }
+  | {
+      type: "inc10";
+    }
+  | {
+      type: "dec";
+    }
+  | {
+      type: "dec10";
+    }
+  | {
+      type: "plus";
+      payload: number;
+    }
+  | {
+      type: "plusSecond";
+      payload: number;
+    };
 
 const reducersConfig = {
-    counter: (state = 0, action: Action) => {
-        switch (action.type) {
-            case('inc'): {
-                return state + 1
-            }
-            case('dec'): {
-                return state - 1
-            }
-            case('plus'): {
-                return state + action.payload
-            }
-        }
-        return state;
-    },
-    secondCounter: (state = 0, action: Action) => {
-        switch (action.type) {
-            case('inc10'): {
-                return state + 10
-            }
-            case('dec10'): {
-                return state - 10
-            }
-            case('plusSecond'): {
-                return state + action.payload
-            }
-        }
-        return state;
-    },
+  counter: (state = 0, action: Action) => {
+    switch (action.type) {
+      case "inc": {
+        return state + 1;
+      }
+      case "dec": {
+        return state - 1;
+      }
+      case "plus": {
+        return state + action.payload;
+      }
+    }
+    return state;
+  },
+  secondCounter: (state = 0, action: Action) => {
+    switch (action.type) {
+      case "inc10": {
+        return state + 10;
+      }
+      case "dec10": {
+        return state - 10;
+      }
+      case "plusSecond": {
+        return state + action.payload;
+      }
+    }
+    return state;
+  },
 };
 
 const combinedReducer = combineReducers<State, Action>(reducersConfig);
@@ -76,45 +81,56 @@ const store = configureStore(combinedReducer, state);
    <input type="number" class="secondNumber" value="200" /><button class="secondPlus">plus</button>
  `;
 
-const incButton = document.querySelector('.inc') as HTMLButtonElement;
-const decButton = document.querySelector('.dec') as HTMLButtonElement;
-const plusButton = document.querySelector('.plus') as HTMLButtonElement;
-const numberInput = document.querySelector('.number') as HTMLInputElement;
-const header = document.querySelector('.h1') as HTMLHeadElement;
+const incButton = document.querySelector(".inc") as HTMLButtonElement;
+const decButton = document.querySelector(".dec") as HTMLButtonElement;
+const plusButton = document.querySelector(".plus") as HTMLButtonElement;
+const numberInput = document.querySelector(".number") as HTMLInputElement;
+const header = document.querySelector(".h1") as HTMLHeadElement;
 
-incButton.addEventListener('click', () => store.dispatch({
-    type: 'inc',
-}));
+incButton.addEventListener("click", () =>
+  store.dispatch({
+    type: "inc",
+  })
+);
 
-decButton.addEventListener('click', () => store.dispatch({
-    type: 'dec',
-}));
+decButton.addEventListener("click", () =>
+  store.dispatch({
+    type: "dec",
+  })
+);
 
-plusButton.addEventListener('click', () => store.dispatch({
-    type: 'plus',
-    payload: Number(numberInput.value)
-}));
+plusButton.addEventListener("click", () =>
+  store.dispatch({
+    type: "plus",
+    payload: Number(numberInput.value),
+  })
+);
 
-store.subscribe(() => header.innerHTML = `Counter: ${store.getState()?.counter}`);
+store.subscribe(() => (header.innerHTML = `Counter: ${store.getState()?.counter}`));
 
+const secondIncButton = document.querySelector(".secondInc") as HTMLButtonElement;
+const secondDecButton = document.querySelector(".secondDec") as HTMLButtonElement;
+const secondPlusButton = document.querySelector(".secondPlus") as HTMLButtonElement;
+const secondNumberInput = document.querySelector(".secondNumber") as HTMLInputElement;
+const secondHeader = document.querySelector(".secondH1") as HTMLHeadElement;
 
-const secondIncButton = document.querySelector('.secondInc') as HTMLButtonElement;
-const secondDecButton = document.querySelector('.secondDec') as HTMLButtonElement;
-const secondPlusButton = document.querySelector('.secondPlus') as HTMLButtonElement;
-const secondNumberInput = document.querySelector('.secondNumber') as HTMLInputElement;
-const secondHeader = document.querySelector('.secondH1') as HTMLHeadElement;
+secondIncButton.addEventListener("click", () =>
+  store.dispatch({
+    type: "inc10",
+  })
+);
 
-secondIncButton.addEventListener('click', () => store.dispatch({
-    type: 'inc10',
-}));
+secondDecButton.addEventListener("click", () =>
+  store.dispatch({
+    type: "dec10",
+  })
+);
 
-secondDecButton.addEventListener('click', () => store.dispatch({
-    type: 'dec10',
-}));
+secondPlusButton.addEventListener("click", () =>
+  store.dispatch({
+    type: "plusSecond",
+    payload: Number(secondNumberInput.value),
+  })
+);
 
-secondPlusButton.addEventListener('click', () => store.dispatch({
-    type: 'plusSecond',
-    payload: Number(secondNumberInput.value)
-}));
-
-store.subscribe(() => secondHeader.innerHTML = `Second Counter: ${store.getState()?.secondCounter}`);
+store.subscribe(() => (secondHeader.innerHTML = `Second Counter: ${store.getState()?.secondCounter}`));
